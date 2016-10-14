@@ -1,12 +1,21 @@
 import random
 import string
 
-def generator(data_type, size):
-    # a = None
+
+def generator(data_type, size, upper=True):
+    a = None
+    if len(size) == 0:
+        raise ValueError('Field length cannot be empty')
     size = int(size)
     if data_type != 'special':
         if data_type == 'str':
-            a = ''.join(random.choice(string.ascii_uppercase) for _ in range(size))
+            if upper:
+                uppercase = string.ascii_uppercase
+            else:
+                uppercase = string.ascii_lowercase
+
+            a = ''.join(random.choice(uppercase) for _ in range(size))
+
         elif data_type == 'int':
             a = ''.join(random.choice(string.digits) for _ in range(size))
     else:
