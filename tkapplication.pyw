@@ -22,6 +22,10 @@ class Application(Frame):
                               text="Special characters",
                               variable=self.var,
                               value='special')
+        self.R4 = Radiobutton(root,
+                              text="All types",
+                              variable=self.var,
+                              value='all')
         self.s_label = Label(root, text="Type string length:")
         self.upper_var = BooleanVar()
         self.checkbox_upper = Checkbutton(root, text="String Uppercase", variable=self.upper_var)
@@ -39,6 +43,7 @@ class Application(Frame):
         self.var.set(value='str')
         self.dt_label.place(x=10, y=10)
         self.dt_label.config(width=15, height=1)
+
         self.R1.place(y=50, anchor=W)
         self.R1.config(width=9, height=1)
 
@@ -47,6 +52,9 @@ class Application(Frame):
 
         self.R3.place(y=90, anchor=W)
         self.R3.config(width=18, height=1)
+
+        self.R4.place(y=110, anchor=W)
+        self.R4.config(width=11, height=1)
 
         self.s_label.place(y=130, anchor=W)
         self.s_label.config(width=20, height=1)

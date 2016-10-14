@@ -3,26 +3,26 @@ import string
 
 
 def generator(data_type, size, upper=True):
-    a = None
     if len(size) == 0:
         raise ValueError('Field length cannot be empty')
     size = int(size)
-    if data_type != 'special':
-        if data_type == 'str':
-            if upper:
-                uppercase = string.ascii_uppercase
-            else:
-                uppercase = string.ascii_lowercase
+    choice_int = ''
+    choice_str = ''
+    choice_special = ''
+    if data_type == 'str' or data_type == 'all':
+        choice_str = string.ascii_uppercase
+    if data_type == 'int' or data_type == 'all':
+        choice_int = string.digits
+    if data_type == 'special' or data_type == 'all':
+        choice_special = '~`!@#$%^&*()_+=-{}:"|<>?/.,\'\\\;][|'
 
-            a = ''.join(random.choice(uppercase) for _ in range(size))
+    value = _random_choice(size, choice_int, choice_str, choice_special)
+    if not upper:
+        value.lower()
+    return value
 
-        elif data_type == 'int':
-            a = ''.join(random.choice(string.digits) for _ in range(size))
-    else:
-        special = "~`!@#$%^&*()_+=-{}:|<\>?[];'\,./|"
-        new_size = size - len(special)
-        if new_size <= 0:
-            a = special
-        else:
-            a = ''.join(random.choice("~`!@#$%^&*()_+=-{}:|<\>?[];'\,./|") for _ in range(size))
-    return a
+
+def _random_choice(size, choice_int, choice_str, choice_spec):
+    attributes = choice_int + choice_str + choice_spec
+    print(attributes)
+    return ''.join(random.choice(attributes) for _ in range(size))
