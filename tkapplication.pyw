@@ -63,7 +63,7 @@ class Application(Frame):
         self.size.config(width=20)
 
         self.upper_var.set(True)
-        self.checkbox_upper.place(x=10, y=200, anchor=W)
+        self.checkbox_upper.place(x=10, y=190, anchor=W)
         self.checkbox_upper.config(width=15)
 
         self.quit_btn.place(x=15, y=350)
