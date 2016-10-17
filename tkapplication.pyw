@@ -8,24 +8,9 @@ class Application(Frame):
         super(Application, self).__init__(master)
         self.var = StringVar()
         self.dt_label = Label(root, text="Select data type:")
-        self.R1 = Radiobutton(
-            root,
-            text="String",
-            variable=self.var,
-            value='str',
-            indicatoron=True)
-        self.R2 = Radiobutton(root,
-                              text="Integer",
-                              variable=self.var,
-                              value='int')
-        self.R3 = Radiobutton(root,
-                              text="Special characters",
-                              variable=self.var,
-                              value='special')
-        self.R4 = Radiobutton(root,
-                              text="All types",
-                              variable=self.var,
-                              value='all')
+        self.tex = Text(root)
+        self.tex.pack()
+        self.size = Entry(root)
         self.s_label = Label(root, text="Type string length:")
         self.upper_var = BooleanVar()
         self.checkbox_upper = Checkbutton(root, text="String Uppercase", variable=self.upper_var)
@@ -35,9 +20,32 @@ class Application(Frame):
         self.generate_btn = Button(root,
                                    text="Generate",
                                    command=self.generate_data)
-        self.tex = Text(root)
+
         self.scrl = Scrollbar(root)
+        self.R1 = Radiobutton(
+            root,
+            text="String",
+            variable=self.var,
+            value='str',
+            indicatoron=True,
+            command=lambda: self.enable_elements(self.size, self.checkbox_upper))
+        self.R2 = Radiobutton(root,
+                              text="Integer",
+                              variable=self.var,
+                              value='int',
+                              command = lambda: self.disableElement(self.checkbox_upper))
+        self.R3 = Radiobutton(root,
+                              text="Special characters",
+                              variable=self.var,
+                              value='special',
+                              command= lambda: self.disableElement(self.checkbox_upper))
+        self.R4 = Radiobutton(root,
+                              text="All types",
+                              variable=self.var,
+                              value='all',
+                              command=lambda : self.enable_elements(self.size, self.checkbox_upper))
         self.set_widget()
+        self.pack()
 
     def set_widget(self):
         self.var.set(value='str')
@@ -58,7 +66,6 @@ class Application(Frame):
 
         self.s_label.place(y=130, anchor=W)
         self.s_label.config(width=20, height=1)
-        self.size = Entry(root)
         self.size.place(x=20, y=160, anchor=W)
         self.size.config(width=20)
 
@@ -96,9 +103,25 @@ class Application(Frame):
             data = e
         self.print_data(data)
 
+    def enable_element(self, element):
+        element.configure(state="normal")
+        element.update()
+
+    def enable_elements(self, *elements):
+        for el in elements:
+            self.enable_element(el)
+
+    def disableElement(self, element):
+        element.configure(state='disabled')
+        element.update()
+
+    def disableElements(self, *elements):
+        for el in elements:
+            self.disableElement(el)
 
 root = Tk()
 root.title("Random string generator")
 root.geometry("650x400")
 app = Application(root)
+app.pack()
 root.mainloop()
