@@ -19,7 +19,7 @@ class Application(Frame):
                                        text="All special",
                                        variable=self.all_var,
                                        state='disabled',
-                                       command=lambda: self.all_special_checkbox_action(self.all_var.get()))
+                                       command=lambda: self.all_special_action(self.all_var.get()))
 
         self.quit_btn = Button(root,
                                text="Quit",
@@ -53,21 +53,6 @@ class Application(Frame):
                               command=lambda: self.R4_action())
         self.set_widget()
         self.pack()
-
-    def R1_action(self):
-        self.enable_elements(self.size, self.checkbox_upper)
-        self.disable_element(self.all_special)
-
-    def R2_action(self):
-        self.disable_elements(self.checkbox_upper, self.all_special)
-
-    def R3_action(self):
-        self.enable_elements(self.all_special)
-        self.disable_element(self.checkbox_upper)
-
-    def R4_action(self):
-        self.enable_elements(self.size, self.checkbox_upper)
-        self.disable_elements(self.all_special)
 
     def set_widget(self):
         self.var.set(value='str')
@@ -108,6 +93,30 @@ class Application(Frame):
         self.tex.config(width=60, height=24, wrap=CHAR, yscrollcommand=self.scrl.set)
         self.scrl.config(command=self.tex.yview)
 
+    def R1_action(self):
+        self.enable_elements(self.size, self.checkbox_upper)
+        self.disable_element(self.all_special)
+        self.set_chackbox_state(self.all_var, False)
+
+    def R2_action(self):
+        self.disable_elements(self.checkbox_upper, self.all_special)
+        self.set_chackbox_state(self.all_var, False)
+
+    def R3_action(self):
+        self.enable_elements(self.all_special)
+        self.disable_element(self.checkbox_upper)
+
+    def R4_action(self):
+        self.enable_elements(self.size, self.checkbox_upper)
+        self.disable_elements(self.all_special)
+        self.set_chackbox_state(self.all_var, False)
+
+    def all_special_action(self, checkbox_val):
+        if checkbox_val:
+            self.disable_elements(self.size,self.checkbox_upper)
+        else:
+            self.enable_elements(self.size, self.checkbox_upper)
+
     def get_data_type(self):
         return self.var.get()
 
@@ -117,13 +126,16 @@ class Application(Frame):
     def get_size(self):
         return self.size.get()
 
+    def get_all_special(self):
+        return self.all_var.get()
+
     def print_data(self, data):
         self.tex.delete('1.0', END)
         self.tex.insert(END, data)
 
     def generate_data(self):
         try:
-            data = generator(self.get_data_type(), self.get_size(), self.get_upper())
+            data = generator(self.get_data_type(), self.get_size(), self.get_upper(), self.get_all_special())
         except ValueError as e:
             data = e
         self.print_data(data)
@@ -131,13 +143,6 @@ class Application(Frame):
     def enable_element(self, element):
         element.configure(state="normal")
         element.update()
-
-    def all_special_checkbox_action(self, checkbox_val):
-        print(checkbox_val)
-        if checkbox_val:
-            self.enable_elements(self.size,self.checkbox_upper)
-        else:
-            self.disable_elements(self.size, self.checkbox_upper)
 
     def enable_elements(self, *elements):
         for el in elements:
@@ -151,6 +156,8 @@ class Application(Frame):
         for el in elements:
             self.disable_element(el)
 
+    def set_chackbox_state(self, element, state):
+        element.set(state)
 root = Tk()
 root.title("Random string generator")
 root.geometry("650x400")
